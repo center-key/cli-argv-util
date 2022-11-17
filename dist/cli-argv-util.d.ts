@@ -1,4 +1,4 @@
-//! cli-argv-util v0.0.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v0.1.0 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 export type StringFlagMap = {
     [flag: string]: string | undefined;
@@ -12,6 +12,7 @@ export type Result = {
     invalidFlag: string | null;
     invalidFlagMsg: string | null;
     params: string[];
+    paramCount: number;
 };
 declare const cliArgvUtil: {
     parse(validFlags: string[]): Result;

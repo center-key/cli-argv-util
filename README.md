@@ -19,7 +19,7 @@ $ npm install cli-argv-util
 ```
 
 ## B) Usage
-Enter the following code in your **bin/cli.js** file
+Place the following code in your **bin/cli.js** file
 ```javascript
 import { cliArgvUtil } from 'cli-argv-util';
 
