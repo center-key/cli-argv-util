@@ -8,6 +8,7 @@ export type Result = {
    invalidFlag:    string | null,   //name of the first invalid flag
    invalidFlagMsg: string | null,   //error message for the invalid flag
    params:         string[],        //array of parameter values supplied by the user
+   paramCount:     number,          //number of parameters supplied by the user
    };
 
 const cliArgvUtil = {
@@ -22,12 +23,14 @@ const cliArgvUtil = {
       const onEntries =   validFlags.map(flag => [toCamel(flag), toCamel(flag) in flagMap]);
       const invalidFlag = pairs.find(pair => !validFlags.includes(pair[0]!))?.[0] ?? null;
       const helpMsg =     '\nValid flags are --' + validFlags.join(' --');
+      const params =      args.filter(arg => !/^--/.test(arg));
       return {
          flagMap:        flagMap,
          flagOn:         Object.fromEntries(onEntries),
          invalidFlag:    invalidFlag,
          invalidFlagMsg: invalidFlag ? 'Invalid flag: --' + invalidFlag + helpMsg : null,
-         params:         args.filter((arg: string) => !/^--/.test(arg)),
+         params:         params,
+         paramCount:     params.length,
          };
       },
 

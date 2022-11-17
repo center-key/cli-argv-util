@@ -61,6 +61,7 @@ describe('Calling cliArgvUtil.parse()', () => {
          invalidFlag:    null,
          invalidFlagMsg: null,
          params:         ['file.html', 'file.png'],
+         paramCount:     2,
          };
       assertDeepStrictEqual(actual, expected);
       });
@@ -82,6 +83,7 @@ describe('Calling cliArgvUtil.parse()', () => {
          invalidFlag:    null,
          invalidFlagMsg: null,
          params:         ['file.html', 'file.png'],
+         paramCount:     2,
          };
       assertDeepStrictEqual(actual, expected);
       });
@@ -100,6 +102,7 @@ describe('Calling cliArgvUtil.parse()', () => {
          invalidFlag:    null,
          invalidFlagMsg: null,
          params:         [],
+         paramCount:     0,
          };
       assertDeepStrictEqual(actual, expected);
       });
@@ -126,6 +129,7 @@ describe('Correct error message is generated', () => {
          invalidFlag:    'bogus',
          invalidFlagMsg: 'Invalid flag: --bogus\nValid flags are --flag1 --flag2 --flag3',
          params:         ['file.html', 'file.png'],
+         paramCount:     2,
          };
       assertDeepStrictEqual(actual, expected);
       });
