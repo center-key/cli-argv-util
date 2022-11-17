@@ -12,9 +12,6 @@ _Simple utility to parse command line parameters and flags (arguments vector)_
 supplied information on the command line and return the flags and parameters
 in an easy-to-use structure.
 
-<img src=https://raw.githubusercontent.com/center-key/cli-argv-util/main/screenshot.png
-width=800 alt=screenshot>
-
 ## A) Setup
 Install package for node:
 ```shell
@@ -22,6 +19,7 @@ $ npm install cli-argv-util
 ```
 
 ## B) Usage
+Enter the following code in your **bin/cli.js** file
 ```javascript
 import { cliArgvUtil } from 'cli-argv-util';
 
@@ -30,7 +28,9 @@ const cli = cliArgvUtil.parse(validFlags);
 if (cliArgvUtil.invalidFlag)
    throw Error(cliArgvUtil.invalidFlagMsg);
 ```
-If you CLI tool is names `my-program` and a user runs in like:
+For a real world example, see: [cli.js](https://github.com/center-key/copy-file-util/blob/main/bin/cli.js)
+
+If your CLI tool is named `my-program` and a user runs it like:
 ```shell
 $ my-program file.html --cd=src --no-summary file.png
 ```
