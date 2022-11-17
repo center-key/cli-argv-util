@@ -1,0 +1,89 @@
+{
+   "name": "cli-argv-util",
+   "version": "0.0.0",
+   "description": "Simple utility to parse command line parameters and flags (arguments vector)",
+   "license": "MIT",
+   "type": "module",
+   "module": "dist/cli-argv-util.js",
+   "main": "dist/cli-argv-util.umd.cjs",
+   "types": "dist/cli-argv-util.d.ts",
+   "files": [
+      "dist"
+   ],
+   "exports": {
+      ".": {
+         "import": "./dist/cli-argv-util.js",
+         "require": "./dist/cli-argv-util.umd.cjs"
+      },
+      "./": "./dist/"
+   },
+   "repository": "github:center-key/cli-argv-util",
+   "homepage": "https://github.com/center-key/cli-argv-util",
+   "bugs": "https://github.com/center-key/cli-argv-util/issues",
+   "docs": "https://github.com/center-key/cli-argv-util#readme",
+   "author": "Center Key (https://centerkey.com)",
+   "keywords": [
+      "cli",
+      "argv",
+      "params",
+      "flags"
+   ],
+   "jshintConfig": {
+      "esversion": 11,
+      "strict": "implied",
+      "eqeqeq": true,
+      "undef": true,
+      "unused": true,
+      "varstmt": true,
+      "node": true,
+      "mocha": true
+   },
+   "eslintConfig": {
+      "ignorePatterns": [
+         "build",
+         "dist",
+         "node_modules"
+      ],
+      "root": true,
+      "parser": "@typescript-eslint/parser",
+      "plugins": [
+         "@typescript-eslint"
+      ],
+      "extends": [
+         "eslint:recommended",
+         "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+         "@typescript-eslint/no-non-null-assertion": "off"
+      }
+   },
+   "runScriptsConfig": {
+      "build": [
+         "rimraf build dist **/.DS_Store",
+         "jshint . --exclude-path .gitignore",
+         "eslint --max-warnings 0 . --ext .ts",
+         "tsc",
+         "tsc --module UMD --outDir build/umd",
+         "copy-file build/umd/cli-argv-util.js build/cli-argv-util.umd.cjs",
+         "add-dist-header build dist"
+      ]
+   },
+   "scripts": {
+      "pretest": "run-scripts build",
+      "test": "mocha spec/*.spec.js"
+   },
+   "devDependencies": {
+      "@types/node": "~18.11",
+      "@typescript-eslint/eslint-plugin": "~5.43",
+      "@typescript-eslint/parser": "~5.43",
+      "add-dist-header": "~0.3",
+      "assert-deep-strict-equal": "~1.0",
+      "copy-file-util": "~0.1",
+      "eslint": "~8.27",
+      "jshint": "~2.13",
+      "mocha": "~10.1",
+      "rimraf": "~3.0",
+      "run-scripts-util": "~0.1",
+      "typescript": "~4.9"
+   }
+}
