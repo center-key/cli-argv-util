@@ -1,6 +1,6 @@
 {
    "name": "cli-argv-util",
-   "version": "0.1.1",
+   "version": "1.0.0",
    "description": "Simple utility to parse command line parameters and flags (arguments vector)",
    "license": "MIT",
    "type": "module",
@@ -73,13 +73,13 @@
       "test": "mocha spec/*.spec.js"
    },
    "devDependencies": {
-      "@types/node": "~18.11",
-      "@typescript-eslint/eslint-plugin": "~5.50",
-      "@typescript-eslint/parser": "~5.50",
-      "add-dist-header": "~0.3",
+      "@types/node": "~18.13",
+      "@typescript-eslint/eslint-plugin": "~5.52",
+      "@typescript-eslint/parser": "~5.52",
+      "add-dist-header": "~1.0",
       "assert-deep-strict-equal": "~1.0",
       "copy-file-util": "~0.1",
-      "eslint": "~8.33",
+      "eslint": "~8.34",
       "jshint": "~2.13",
       "mocha": "~10.2",
       "rimraf": "3",
