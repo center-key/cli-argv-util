@@ -73,17 +73,17 @@
       "test": "mocha spec/*.spec.js"
    },
    "devDependencies": {
-      "@types/node": "~18.13",
-      "@typescript-eslint/eslint-plugin": "~5.52",
-      "@typescript-eslint/parser": "~5.52",
+      "@types/node": "~18.14",
+      "@typescript-eslint/eslint-plugin": "~5.54",
+      "@typescript-eslint/parser": "~5.54",
       "add-dist-header": "~1.0",
       "assert-deep-strict-equal": "~1.0",
-      "copy-file-util": "~0.1",
-      "eslint": "~8.34",
+      "copy-file-util": "~1.0",
+      "eslint": "~8.35",
       "jshint": "~2.13",
       "mocha": "~10.2",
-      "rimraf": "3",
-      "run-scripts-util": "~0.1",
+      "rimraf": "~4.2",
+      "run-scripts-util": "~1.0",
       "typescript": "~4.9"
    }
 }
