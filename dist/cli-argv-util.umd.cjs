@@ -1,4 +1,4 @@
-//! cli-argv-util v1.0.0 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.0.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
