@@ -17,7 +17,6 @@ describe('The "dist" folder', () => {
       const expected = [
          'cli-argv-util.d.ts',
          'cli-argv-util.js',
-         'cli-argv-util.umd.cjs',
          ];
       assertDeepStrictEqual(actual, expected);
       });

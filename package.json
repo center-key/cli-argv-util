@@ -5,15 +5,14 @@
    "license": "MIT",
    "type": "module",
    "module": "dist/cli-argv-util.js",
-   "main": "dist/cli-argv-util.umd.cjs",
+   "main": "dist/cli-argv-util.js",
    "types": "dist/cli-argv-util.d.ts",
    "files": [
       "dist"
    ],
    "exports": {
       ".": {
-         "import": "./dist/cli-argv-util.js",
-         "require": "./dist/cli-argv-util.umd.cjs"
+         "import": "./dist/cli-argv-util.js"
       },
       "./": "./dist/"
    },
@@ -65,8 +64,6 @@
          "jshint . --exclude-path .gitignore",
          "eslint --max-warnings 0 . --ext .ts",
          "tsc",
-         "tsc --module UMD --outDir build/umd",
-         "copy-file build/umd/cli-argv-util.js build/cli-argv-util.umd.cjs",
          "add-dist-header build dist"
       ]
    },
@@ -75,17 +72,17 @@
       "test": "mocha spec/*.spec.js"
    },
    "devDependencies": {
-      "@types/node": "~18.15",
-      "@typescript-eslint/eslint-plugin": "~5.57",
-      "@typescript-eslint/parser": "~5.57",
+      "@types/node": "~20.3",
+      "@typescript-eslint/eslint-plugin": "~5.60",
+      "@typescript-eslint/parser": "~5.60",
       "add-dist-header": "~1.0",
       "assert-deep-strict-equal": "~1.0",
       "copy-file-util": "~1.0",
-      "eslint": "~8.37",
+      "eslint": "~8.43",
       "jshint": "~2.13",
       "mocha": "~10.2",
-      "rimraf": "~4.4",
+      "rimraf": "~5.0",
       "run-scripts-util": "~1.1",
-      "typescript": "~5.0"
+      "typescript": "~5.1"
    }
 }
