@@ -32,9 +32,15 @@ describe('Library module', () => {
       assertDeepStrictEqual(actual, expected);
       });
 
-   it('has a parse() function', () => {
-      const actual =   { validate: typeof cliArgvUtil.parse };
-      const expected = { validate: 'function' };
+   it('has functions named parse() and run()', () => {
+      const actual =   {
+         names: Object.keys(cliArgvUtil),
+         types: Object.values(cliArgvUtil).map(fn => typeof fn),
+         };
+      const expected = {
+         names: ['parse',    'run'],
+         types: ['function', 'function'],
+         };
       assertDeepStrictEqual(actual, expected);
       });
 
