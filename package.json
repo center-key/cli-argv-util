@@ -1,6 +1,6 @@
 {
    "name": "cli-argv-util",
-   "version": "1.1.0",
+   "version": "1.2.0",
    "description": "Simple utility to parse command line parameters and flags (arguments vector)",
    "license": "MIT",
    "type": "module",
@@ -73,8 +73,8 @@
    },
    "devDependencies": {
       "@types/node": "~20.4",
-      "@typescript-eslint/eslint-plugin": "~5.61",
-      "@typescript-eslint/parser": "~5.61",
+      "@typescript-eslint/eslint-plugin": "~6.0",
+      "@typescript-eslint/parser": "~6.0",
       "add-dist-header": "~1.1",
       "assert-deep-strict-equal": "~1.1",
       "copy-file-util": "~1.1",

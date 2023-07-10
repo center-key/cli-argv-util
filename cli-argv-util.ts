@@ -37,6 +37,10 @@ const cliArgvUtil = {
       },
 
    run(packageJson: { [key: string]: unknown }, posix: string) {
+      // Example usage:
+      //    const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
+      //    it('executing from the CLI copies the correct files', () => {
+      //       cliArgvUtil.run(pkg, 'copy-folder source build');
       const name =    Object.keys(<string[]>packageJson.bin).sort()[0]!;
       const command = process.platform === 'win32' ? posix.replaceAll('\\ ', '" "') : posix;
       return execSync(command.replace(name, 'node bin/cli.js'), { stdio: 'inherit' });
