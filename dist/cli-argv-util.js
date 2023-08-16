@@ -1,6 +1,8 @@
-//! cli-argv-util v1.2.0 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.2.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
+import fs from 'fs';
+import slash from 'slash';
 const cliArgvUtil = {
     parse(validFlags) {
         const toCamel = (token) => token.replace(/-./g, char => char[1].toUpperCase());
@@ -26,6 +28,9 @@ const cliArgvUtil = {
         const name = Object.keys(packageJson.bin).sort()[0];
         const command = process.platform === 'win32' ? posix.replaceAll('\\ ', '" "') : posix;
         return execSync(command.replace(name, 'node bin/cli.js'), { stdio: 'inherit' });
+    },
+    readFiles(folder) {
+        return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
     },
 };
 export { cliArgvUtil };

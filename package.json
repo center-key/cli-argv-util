@@ -1,6 +1,6 @@
 {
    "name": "cli-argv-util",
-   "version": "1.2.0",
+   "version": "1.2.1",
    "description": "Simple utility to parse command line parameters and flags (arguments vector)",
    "license": "MIT",
    "type": "module",
