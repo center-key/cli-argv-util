@@ -1,7 +1,11 @@
 // cli-argv-util ~~ MIT License
 
+// Imports
 import { execSync } from 'node:child_process';
+import fs    from 'fs';
+import slash from 'slash';
 
+// Types
 export type StringFlagMap =  { [flag: string]: string | undefined };
 export type BooleanFlagMap = { [flag: string]: boolean };
 export type Result = {
@@ -44,6 +48,11 @@ const cliArgvUtil = {
       const name =    Object.keys(<string[]>packageJson.bin).sort()[0]!;
       const command = process.platform === 'win32' ? posix.replaceAll('\\ ', '" "') : posix;
       return execSync(command.replace(name, 'node bin/cli.js'), { stdio: 'inherit' });
+      },
+
+
+   readFiles(folder: string): string[] {
+      return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
       },
 
    };
