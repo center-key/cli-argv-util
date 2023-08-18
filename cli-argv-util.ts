@@ -51,7 +51,7 @@ const cliArgvUtil = {
       },
 
 
-   readFiles(folder: string): string[] {
+   readFolder(folder: string): string[] {
       return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
       },
 
