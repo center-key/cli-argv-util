@@ -1,4 +1,4 @@
-//! cli-argv-util v1.2.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.2.2 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import fs from 'fs';
@@ -29,7 +29,7 @@ const cliArgvUtil = {
         const command = process.platform === 'win32' ? posix.replaceAll('\\ ', '" "') : posix;
         return execSync(command.replace(name, 'node bin/cli.js'), { stdio: 'inherit' });
     },
-    readFiles(folder) {
+    readFolder(folder) {
         return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
     },
 };
