@@ -32,15 +32,14 @@ describe('Library module', () => {
       assertDeepStrictEqual(actual, expected);
       });
 
-   it('has functions named parse(), run(), and readFolder()', () => {
-      const actual =   {
-         names: Object.keys(cliArgvUtil),
-         types: Object.values(cliArgvUtil).map(fn => typeof fn),
-         };
-      const expected = {
-         names: ['parse',    'run',      'readFolder'],
-         types: ['function', 'function', 'function'],
-         };
+   it('has functions named parse(), readFolder(), and run()', () => {
+      const module = cliArgvUtil;
+      const actual = Object.keys(module).sort().map(key => [key, typeof module[key]]);
+      const expected = [
+         ['parse',      'function'],
+         ['readFolder', 'function'],
+         ['run',        'function'],
+         ];
       assertDeepStrictEqual(actual, expected);
       });
 
