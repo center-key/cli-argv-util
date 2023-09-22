@@ -21,9 +21,10 @@ const cliArgvUtil = {
 
    parse(validFlags: string[]): Result {
       const toCamel =     (token: string) =>  token.replace(/-./g, char => char[1]!.toUpperCase());  //example: 'no-map' --> 'noMap'
-      const toEntry =     (pair: string[]) => [toCamel(pair[0]!), pair[1]];      //example: ['no-map'] --> ['noMap', undefined]
+      const toEntry =     (pair: string[]) => [toCamel(pair[0]!), pair[1]];        //example: ['no-map'] --> ['noMap', undefined]
       const toPair =      (flag: string) =>   flag.replace(/^--/, '').split('=');  //example: '--cd=build' --> ['cd', 'build']
-      const args =        process.argv.slice(2);
+      const unquote =     (arg: string) =>    /^'.*'$/.test(arg) ? arg.slice(1, -1) : arg;  //workaround Windows flaw
+      const args =        process.argv.slice(2).map(unquote);
       const pairs =       args.filter(arg => /^--/.test(arg)).map(toPair);
       const flagMap =     Object.fromEntries(pairs.map(toEntry));
       const onEntries =   validFlags.map(flag => [toCamel(flag), toCamel(flag) in flagMap]);
