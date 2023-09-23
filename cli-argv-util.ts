@@ -16,7 +16,6 @@ export type Result = {
    params:         string[],        //array of parameter values supplied by the user
    paramCount:     number,          //number of parameters supplied by the user
    };
-type ArgsBuilder = [quoteMode: boolean, args: string[]];
 
 const cliArgvUtil = {
 
@@ -24,17 +23,7 @@ const cliArgvUtil = {
       const toCamel =     (token: string) =>  token.replace(/-./g, char => char[1]!.toUpperCase());  //example: 'no-map' --> 'noMap'
       const toEntry =     (pair: string[]) => [toCamel(pair[0]!), pair[1]];        //example: ['no-map'] --> ['noMap', undefined]
       const toPair =      (flag: string) =>   flag.replace(/^--/, '').split('=');  //example: '--cd=build' --> ['cd', 'build']
-      const unquote = (builder: ArgsBuilder, nextArg: string): ArgsBuilder => {  //workaround Windows flaw
-         const arg =  nextArg.replace(/^'/, '').replace(/'$/, '');
-         const last = builder[1].length - 1;
-         if (builder[0])  //true only if if running on Microsoft Windows
-            builder[1][last] = builder[1][last] + ' ' + arg;
-         else
-            builder[1].push(arg);
-         const quoteMode = (/^'/.test(nextArg) || builder[0]) && !/'$/.test(nextArg);
-         return [quoteMode, builder[1]];
-         };
-      const args =        process.argv.slice(2).reduce(unquote, [false, []])[1];
+      const args =        cliArgvUtil.unquoteArgs(process.argv.slice(2));
       const pairs =       args.filter(arg => /^--/.test(arg)).map(toPair);
       const flagMap =     Object.fromEntries(pairs.map(toEntry));
       const onEntries =   validFlags.map(flag => [toCamel(flag), toCamel(flag) in flagMap]);
@@ -64,6 +53,22 @@ const cliArgvUtil = {
 
    readFolder(folder: string): string[] {
       return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
+      },
+
+   unquoteArgs(args: string[]): string[] {
+      // A workaround to a Microsoft Windows flaw
+      type ArgsBuilder = [quoteMode: boolean, args: string[]];
+      const unquote = (builder: ArgsBuilder, nextArg: string): ArgsBuilder => {
+         const arg =  nextArg.replace(/^'/, '').replace(/'$/, '');
+         const last = builder[1].length - 1;
+         if (builder[0])  //true only if running on Microsoft Windows
+            builder[1][last] = builder[1][last] + ' ' + arg;
+         else
+            builder[1].push(arg);
+         const quoteMode = (/^'/.test(nextArg) || builder[0]) && !/'$/.test(nextArg);
+         return [quoteMode, builder[1]];
+         };
+      return args.reduce(unquote, [false, []])[1];
       },
 
    };

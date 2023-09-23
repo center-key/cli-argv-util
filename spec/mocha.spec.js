@@ -36,9 +36,10 @@ describe('Library module', () => {
       const module = cliArgvUtil;
       const actual = Object.keys(module).sort().map(key => [key, typeof module[key]]);
       const expected = [
-         ['parse',      'function'],
-         ['readFolder', 'function'],
-         ['run',        'function'],
+         ['parse',       'function'],
+         ['readFolder',  'function'],
+         ['run',         'function'],
+         ['unquoteArgs', 'function'],
          ];
       assertDeepStrictEqual(actual, expected);
       });
