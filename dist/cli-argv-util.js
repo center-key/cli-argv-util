@@ -1,4 +1,4 @@
-//! cli-argv-util v1.2.2 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.2.3 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import fs from 'fs';
@@ -8,7 +8,17 @@ const cliArgvUtil = {
         const toCamel = (token) => token.replace(/-./g, char => char[1].toUpperCase());
         const toEntry = (pair) => [toCamel(pair[0]), pair[1]];
         const toPair = (flag) => flag.replace(/^--/, '').split('=');
-        const args = process.argv.slice(2);
+        const unquote = (builder, nextArg) => {
+            const arg = nextArg.replace(/^'/, '').replace(/'$/, '');
+            const last = builder[1].length - 1;
+            if (builder[0])
+                builder[1][last] = builder[1][last] + ' ' + arg;
+            else
+                builder[1].push(arg);
+            const quoteMode = (/^'/.test(nextArg) || builder[0]) && !/'$/.test(nextArg);
+            return [quoteMode, builder[1]];
+        };
+        const args = process.argv.slice(2).reduce(unquote, [false, []])[1];
         const pairs = args.filter(arg => /^--/.test(arg)).map(toPair);
         const flagMap = Object.fromEntries(pairs.map(toEntry));
         const onEntries = validFlags.map(flag => [toCamel(flag), toCamel(flag) in flagMap]);

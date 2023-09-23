@@ -69,7 +69,7 @@ See the **TypeScript Declarations** at the top of [cli-argv-util.ts](cli-argv-ut
 <br>
 
 ---
-**CLI Build Tools**
+**CLI Build Tools for package.json**
    - 🎋 [add-dist-header](https://github.com/center-key/add-dist-header):&nbsp; _Prepend a one-line banner comment (with license notice) to distribution files_
    - 📄 [cli-argv-util](https://github.com/center-key/cli-argv-util):&nbsp; _Copy or rename a file with optional package version number_
    - 📂 [copy-folder-util](https://github.com/center-key/copy-folder-util):&nbsp; _Recursively copy files from one folder to another folder_
