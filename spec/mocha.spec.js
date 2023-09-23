@@ -113,12 +113,12 @@ describe('Calling cliArgvUtil.parse()', () => {
 
    it('trims single quotes wrapping flags and parameters', () => {
       const validFlags = ['flag-one', 'flag-two', 'flag-three'];
-      mockCli("file.html '--flag-one' 'file.png' '--flag-three=three'");
+      mockCli("file.html '--flag-one' 'filename with spaces.png' '--flag-three=t h r e e'");
       const actual = cliArgvUtil.parse(validFlags);
       const expected = {
          flagMap: {
             flagOne:   undefined,
-            flagThree: 'three',
+            flagThree: 't h r e e',
             },
          flagOn: {
             flagOne:   true,
@@ -127,7 +127,7 @@ describe('Calling cliArgvUtil.parse()', () => {
             },
          invalidFlag:    null,
          invalidFlagMsg: null,
-         params:         ['file.html', 'file.png'],
+         params:         ['file.html', 'filename with spaces.png'],
          paramCount:     2,
          };
       assertDeepStrictEqual(actual, expected);
