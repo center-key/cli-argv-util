@@ -1,6 +1,6 @@
 {
    "name": "cli-argv-util",
-   "version": "1.2.3",
+   "version": "1.2.4",
    "description": "Simple utility to parse command line parameters and flags (arguments vector)",
    "license": "MIT",
    "type": "module",
@@ -16,7 +16,10 @@
       },
       "./": "./dist/"
    },
-   "repository": "github:center-key/cli-argv-util",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/center-key/cli-argv-util.git"
+   },
    "homepage": "https://github.com/center-key/cli-argv-util",
    "bugs": "https://github.com/center-key/cli-argv-util/issues",
    "docs": "https://github.com/center-key/cli-argv-util#readme",
