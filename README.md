@@ -23,22 +23,26 @@ Place the following code in your **bin/cli.js** file
 import { cliArgvUtil } from 'cli-argv-util';
 
 const validFlags = ['cd', 'find', 'no-summary'];
-const cli = cliArgvUtil.parse(validFlags);
-if (cliArgvUtil.invalidFlag)
-   throw Error(cliArgvUtil.invalidFlagMsg);
+const cli =        cliArgvUtil.parse(validFlags);
+if (cli.invalidFlag)
+   throw Error(cli.invalidFlagMsg);
+if (cli.flagOn.find)
+   console.log('You set the --find CLI flag to:', cli.flagMap.find);
+if (cli.flagOn.noSummary)
+   console.log('You enabled the --no-summary CLI option.');
+console.log('You supplied', cli.params.length , 'CLI parameter(s).');
 ```
 For a real world example, see: [cli.js](https://github.com/center-key/copy-file-util/blob/main/bin/cli.js)
 
 If your CLI tool is named `my-program` and a user runs it like:
 ```shell
-$ my-program file.html --cd=src --no-summary file.png
+$ my-program about.html --cd=src --no-summary 'Hello World' 777
 ```
 the resulting `cli` object will be:
 ```javascript
 {
    flagMap: {
-      cd:        'src',
-      noSummary: undefined,
+      cd: 'src',
       },
    flagOn: {
       cd:        true,
@@ -47,9 +51,10 @@ the resulting `cli` object will be:
       },
    invalidFlag:    null,
    invalidFlagMsg: null,
-   params:         ['file.html', 'file.png'],
+   params:         ['about.html', 'Hello World', '777'],
 }
 ```
+_**Note:** Single quotes in commands are normalized so they work cross-platform and avoid the errors often encountered on Microsoft Windows._
 
 ## C) Results
 The `cliArgvUtil.parse()` returns an object of type `Result`:
