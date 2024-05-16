@@ -5,7 +5,7 @@ _Simple utility to parse command line parameters and flags (arguments vector)_
 
 [![License:MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/center-key/cli-argv-util/blob/main/LICENSE.txt)
 [![npm](https://img.shields.io/npm/v/cli-argv-util.svg)](https://www.npmjs.com/package/cli-argv-util)
-[![Build](https://github.com/center-key/cli-argv-util/workflows/build/badge.svg)](https://github.com/center-key/cli-argv-util/actions/workflows/run-spec-on-push.yaml)
+[![Build](https://github.com/center-key/cli-argv-util/actions/workflows/run-spec-on-push.yaml/badge.svg)](https://github.com/center-key/cli-argv-util/actions/workflows/run-spec-on-push.yaml)
 
 **cli-argv-util** is called from your `bin/cli.js` file in order to read user
 supplied information on the command line and return the flags and parameters
