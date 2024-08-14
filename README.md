@@ -25,14 +25,15 @@ import { cliArgvUtil } from 'cli-argv-util';
 const validFlags = ['cd', 'find', 'no-summary'];
 const cli =        cliArgvUtil.parse(validFlags);
 if (cli.invalidFlag)
-   throw Error(cli.invalidFlagMsg);
+   throw new Error(cli.invalidFlagMsg);
 if (cli.flagOn.find)
    console.log('You set the --find CLI flag to:', cli.flagMap.find);
 if (cli.flagOn.noSummary)
    console.log('You enabled the --no-summary CLI option.');
 console.log('You supplied', cli.params.length , 'CLI parameter(s).');
 ```
-For a real world example, see: [cli.js](https://github.com/center-key/copy-file-util/blob/main/bin/cli.js)
+For a real world example, see:
+[cli.js](https://github.com/center-key/copy-file-util/blob/main/bin/cli.js)
 
 If your CLI tool is named `my-program` and a user runs it like:
 ```shell
@@ -81,7 +82,7 @@ See the **TypeScript Declarations** at the top of [cli-argv-util.ts](cli-argv-ut
    - 🪺 [recursive-exec](https://github.com/center-key/recursive-exec):&nbsp; _Run a command on each file in a folder and its subfolders_
    - 🔍 [replacer-util](https://github.com/center-key/replacer-util):&nbsp; _Find and replace strings or template outputs in text files_
    - 🔢 [rev-web-assets](https://github.com/center-key/rev-web-assets):&nbsp; _Revision web asset filenames with cache busting content hash fingerprints_
-   - 🚆 [run-scripts-util](https://github.com/center-key/run-scripts-util):&nbsp; _Organize npm package.json scripts into named groups of easy to manage commands_
+   - 🚆 [run-scripts-util](https://github.com/center-key/run-scripts-util):&nbsp; _Organize npm package.json scripts into groups of easy to manage commands_
    - 🚦 [w3c-html-validator](https://github.com/center-key/w3c-html-validator):&nbsp; _Check the markup validity of HTML files using the W3C validator_
 
 Feel free to submit questions at:<br>

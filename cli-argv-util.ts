@@ -25,14 +25,15 @@ const cliArgvUtil = {
       const toPair =      (flag: string) =>   flag.replace(/^--/, '').split('=');  //example: '--cd=build' --> ['cd', 'build']
       const args =        cliArgvUtil.unquoteArgs(process.argv.slice(2));
       const pairs =       args.filter(arg => /^--/.test(arg)).map(toPair);
-      const flagMap =     Object.fromEntries(pairs.map(toEntry));
+      const flagMap =     <StringFlagMap>Object.fromEntries(pairs.map(toEntry));
       const onEntries =   validFlags.map(flag => [toCamel(flag), toCamel(flag) in flagMap]);
+      const flagOn =      <BooleanFlagMap>Object.fromEntries(onEntries);
       const invalidFlag = pairs.find(pair => !validFlags.includes(pair[0]!))?.[0] ?? null;
       const helpMsg =     '\nValid flags are --' + validFlags.join(' --');
       const params =      args.filter(arg => !/^--/.test(arg));
       return {
          flagMap:        flagMap,
-         flagOn:         Object.fromEntries(onEntries),
+         flagOn:         flagOn,
          invalidFlag:    invalidFlag,
          invalidFlagMsg: invalidFlag ? 'Invalid flag: --' + invalidFlag + helpMsg : null,
          params:         params,
@@ -62,7 +63,7 @@ const cliArgvUtil = {
          const arg =  nextArg.replace(/^'/, '').replace(/'$/, '');
          const last = builder[1].length - 1;
          if (builder[0])  //true only if running on Microsoft Windows
-            builder[1][last] = builder[1][last] + ' ' + arg;
+            builder[1][last] = `${builder[1][last]} ${arg}`;
          else
             builder[1].push(arg);
          const quoteMode = (/^'/.test(nextArg) || builder[0]) && !/'$/.test(nextArg);
