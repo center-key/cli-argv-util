@@ -1,4 +1,4 @@
-//! cli-argv-util v1.2.5 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.2.6 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import fs from 'fs';
@@ -12,12 +12,13 @@ const cliArgvUtil = {
         const pairs = args.filter(arg => /^--/.test(arg)).map(toPair);
         const flagMap = Object.fromEntries(pairs.map(toEntry));
         const onEntries = validFlags.map(flag => [toCamel(flag), toCamel(flag) in flagMap]);
+        const flagOn = Object.fromEntries(onEntries);
         const invalidFlag = pairs.find(pair => !validFlags.includes(pair[0]))?.[0] ?? null;
         const helpMsg = '\nValid flags are --' + validFlags.join(' --');
         const params = args.filter(arg => !/^--/.test(arg));
         return {
             flagMap: flagMap,
-            flagOn: Object.fromEntries(onEntries),
+            flagOn: flagOn,
             invalidFlag: invalidFlag,
             invalidFlagMsg: invalidFlag ? 'Invalid flag: --' + invalidFlag + helpMsg : null,
             params: params,
@@ -37,7 +38,7 @@ const cliArgvUtil = {
             const arg = nextArg.replace(/^'/, '').replace(/'$/, '');
             const last = builder[1].length - 1;
             if (builder[0])
-                builder[1][last] = builder[1][last] + ' ' + arg;
+                builder[1][last] = `${builder[1][last]} ${arg}`;
             else
                 builder[1].push(arg);
             const quoteMode = (/^'/.test(nextArg) || builder[0]) && !/'$/.test(nextArg);
