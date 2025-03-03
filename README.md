@@ -70,7 +70,7 @@ export type Result = {
    params:         string[],        //array of parameter values supplied by the user
    };
 ```
-See the **TypeScript Declarations** at the top of [cli-argv-util.ts](cli-argv-util.ts) for documentation.
+See the **TypeScript Declarations** at the top of [cli-argv-util.ts](src/cli-argv-util.ts) for documentation.
 
 <br>
 
