@@ -1,4 +1,4 @@
-//! cli-argv-util v1.2.6 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.2.7 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import fs from 'fs';
