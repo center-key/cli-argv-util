@@ -36,6 +36,7 @@ describe('Library module', () => {
       const module = cliArgvUtil;
       const actual = Object.keys(module).sort().map(key => [key, typeof module[key]]);
       const expected = [
+         ['cleanPath',   'function'],
          ['parse',       'function'],
          ['readFolder',  'function'],
          ['run',         'function'],
@@ -158,6 +159,17 @@ describe('Correct error message is generated', () => {
          params:         ['file.html', 'file.png'],
          paramCount:     2,
          };
+      assertDeepStrictEqual(actual, expected);
+      });
+
+   });
+
+////////////////////////////////////////////////////////////////////////////////
+describe('Function cliArgvUtil.cleanPath()', () => {
+
+   it('correctly normalizes a messy Windows path into a clean Unix path', () => {
+      const actual =   cliArgvUtil.cleanPath(' aaa/./bbb\\ccc/.///../zzz\\ ');
+      const expected = 'aaa/zzz';
       assertDeepStrictEqual(actual, expected);
       });
 

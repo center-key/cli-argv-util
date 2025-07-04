@@ -3,6 +3,7 @@
 // Imports
 import { execSync } from 'node:child_process';
 import fs    from 'fs';
+import path  from 'path';
 import slash from 'slash';
 
 // Types
@@ -54,6 +55,12 @@ const cliArgvUtil = {
 
    readFolder(folder: string): string[] {
       return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
+      },
+
+   cleanPath(name: string): string {
+      // Simple utility to return the normalized Unix version of a path.
+      // Example: "abc\xyz\ " --> "abc/xyz"
+      return slash(path.normalize(name)).trim().replace(/\/$/, '');
       },
 
    unquoteArgs(args: string[]): string[] {
