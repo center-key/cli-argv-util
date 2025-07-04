@@ -1,7 +1,8 @@
-//! cli-argv-util v1.2.7 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.3.0 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import fs from 'fs';
+import path from 'path';
 import slash from 'slash';
 const cliArgvUtil = {
     parse(validFlags) {
@@ -32,6 +33,9 @@ const cliArgvUtil = {
     },
     readFolder(folder) {
         return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
+    },
+    cleanPath(name) {
+        return slash(path.normalize(name)).trim().replace(/\/$/, '');
     },
     unquoteArgs(args) {
         const unquote = (builder, nextArg) => {
