@@ -168,8 +168,8 @@ describe('Correct error message is generated', () => {
 describe('Function cliArgvUtil.cleanPath()', () => {
 
    it('correctly normalizes a messy Windows path into a clean Unix path', () => {
-      const actual =   cliArgvUtil.cleanPath(' aaa/./bbb\\ccc/.///../zzz\\ ');
-      const expected = 'aaa/zzz';
+      const actual =   ['a\\z', ' a\\z\\ ', 'a/b/c/./////..//../z/'].map(cliArgvUtil.cleanPath);
+      const expected = ['a/z',  'a/z',      'a/z'];
       assertDeepStrictEqual(actual, expected);
       });
 
