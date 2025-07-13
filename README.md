@@ -27,10 +27,10 @@ const cli =        cliArgvUtil.parse(validFlags);
 if (cli.invalidFlag)
    throw new Error(cli.invalidFlagMsg);
 if (cli.flagOn.find)
-   console.log('You set the --find CLI flag to:', cli.flagMap.find);
+   console.info('You set the --find CLI flag to:', cli.flagMap.find);
 if (cli.flagOn.noSummary)
-   console.log('You enabled the --no-summary CLI option.');
-console.log('You supplied', cli.params.length , 'CLI parameter(s).');
+   console.info('You enabled the --no-summary CLI option.');
+console.info('You supplied', cli.params.length , 'CLI parameter(s).');
 ```
 For a real world example, see:
 [cli.js](https://github.com/center-key/copy-file-util/blob/main/bin/cli.js)
