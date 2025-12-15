@@ -55,7 +55,8 @@ the resulting `cli` object will be:
    params:         ['about.html', 'Hello World', '777'],
 }
 ```
-_**Note:** Single quotes in commands are normalized so they work cross-platform and avoid the errors often encountered on Microsoft Windows._
+> [!NOTE]
+> _Single quotes in commands are normalized so they work cross-platform and avoid the errors often encountered on Microsoft Windows._
 
 ## C) Results
 The `cliArgvUtil.parse()` returns an object of type `Result`:
