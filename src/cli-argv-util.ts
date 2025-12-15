@@ -2,6 +2,7 @@
 
 // Imports
 import { execSync } from 'node:child_process';
+import chalk from 'chalk';
 import fs    from 'fs';
 import path  from 'path';
 import slash from 'slash';
@@ -9,6 +10,12 @@ import slash from 'slash';
 // Types
 export type StringFlagMap =  { [flag: string]: string | undefined };
 export type BooleanFlagMap = { [flag: string]: boolean };
+export type Ancestor = {
+   common:  string,  //path of the lowest common ancestor folder
+   source:  string,  //path of the source file relative to the ancestor folder
+   target:  string,  //path of the target file relative to the ancestor folder
+   message: string,  //color output in the format: "common: source -> target"
+   };
 export type Result = {
    flagMap:        StringFlagMap,   //map of flag values for each user supplied flag
    flagOn:         BooleanFlagMap,  //map of the enabled status for all valid flags
@@ -61,6 +68,23 @@ const cliArgvUtil = {
       // Simple utility to return the normalized Unix version of a path.
       // Example: "abc\xyz\ " --> "abc/xyz"
       return slash(path.normalize(name)).trim().replace(/\/$/, '');
+      },
+
+   calcAncestor(sourceFile: string, targetFile: string): Ancestor {
+      // Example:
+      //    calcAncestor('aaa/bbb/logo.png', 'aaa/bbb/ccc/logo.png')
+      // Returns:
+      //    { common: 'aaa/bbb', source: 'logo.png', target: 'ccc/logo.png',
+      //       message: 'aaa/bbb: logo.png -> ccc/logo.png' };
+      const index =   Array.from(sourceFile).findIndex((char, i) => targetFile[i] !== char);
+      const substr =  index === -1 ? sourceFile : sourceFile.substring(0, index);
+      const common =  sourceFile.substring(0, substr.lastIndexOf('/'));
+      const len =     common.length ? common.length + 1 : 0;
+      const source =  sourceFile.substring(len);
+      const target =  targetFile.substring(len);
+      const intro =   common ? chalk.blue(common) + chalk.gray.bold(': ') : '';
+      const message = intro + chalk.white(source) + chalk.gray.bold(' → ') + chalk.green(target);
+      return { common, source, target, message };
       },
 
    unquoteArgs(args: string[]): string[] {

@@ -32,15 +32,16 @@ describe('Library module', () => {
       assertDeepStrictEqual(actual, expected);
       });
 
-   it('has functions named parse(), readFolder(), and run()', () => {
+   it('has the correct functions', () => {
       const module = cliArgvUtil;
       const actual = Object.keys(module).sort().map(key => [key, typeof module[key]]);
       const expected = [
-         ['cleanPath',   'function'],
-         ['parse',       'function'],
-         ['readFolder',  'function'],
-         ['run',         'function'],
-         ['unquoteArgs', 'function'],
+         ['calcAncestor', 'function'],
+         ['cleanPath',    'function'],
+         ['parse',        'function'],
+         ['readFolder',   'function'],
+         ['run',          'function'],
+         ['unquoteArgs',  'function'],
          ];
       assertDeepStrictEqual(actual, expected);
       });
@@ -170,6 +171,44 @@ describe('Function cliArgvUtil.cleanPath()', () => {
    it('correctly normalizes a messy Windows path into a clean Unix path', () => {
       const actual =   ['a\\z', ' a\\z\\ ', 'a/b/c/./////..//../z/'].map(cliArgvUtil.cleanPath);
       const expected = ['a/z',  'a/z',      'a/z'];
+      assertDeepStrictEqual(actual, expected);
+      });
+
+   });
+
+////////////////////////////////////////////////////////////////////////////////
+describe('Function cliArgvUtil.calcAncestor()', () => {
+
+   it('finds the ancestor folder of 2 files in the same folder', () => {
+      const actual = cliArgvUtil.calcAncestor('web/style.less', 'web/style.css');
+      delete actual.message;
+      const expected = {
+         common: 'web',
+         source: 'style.less',
+         target: 'style.css',
+         };
+      assertDeepStrictEqual(actual, expected);
+      });
+
+   it('finds the ancestor folder when the target file is in a subfolder of the source file', () => {
+      const actual = cliArgvUtil.calcAncestor('aaa/bbb/logo.png', 'aaa/bbb/ccc/logo.png');
+      delete actual.message;
+      const expected = {
+         common: 'aaa/bbb',
+         source: 'logo.png',
+         target: 'ccc/logo.png',
+         };
+      assertDeepStrictEqual(actual, expected);
+      });
+
+   it('finds no ancestor folder for 2 completely different files', () => {
+      const actual = cliArgvUtil.calcAncestor('abc/index.html', 'xyz/license.txt');
+      delete actual.message;
+      const expected = {
+         common: '',
+         source: 'abc/index.html',
+         target: 'xyz/license.txt',
+         };
       assertDeepStrictEqual(actual, expected);
       });
 
