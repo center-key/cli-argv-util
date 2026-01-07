@@ -1,4 +1,4 @@
-//! cli-argv-util v1.4.0 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.4.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import chalk from 'chalk';
@@ -46,8 +46,12 @@ const cliArgvUtil = {
         const source = sourceFile.substring(len);
         const target = targetFile.substring(len);
         const intro = common ? chalk.blue(common) + chalk.gray.bold(': ') : '';
-        const message = intro + chalk.white(source) + chalk.gray.bold(' → ') + chalk.green(target);
-        return { common, source, target, message };
+        const renamed = path.basename(sourceFile) !== path.basename(targetFile);
+        const filename = renamed ? null : path.basename(sourceFile);
+        const folder = path.dirname(target);
+        const dest = renamed ? target : (folder === '.' ? filename : folder + '/');
+        const message = intro + chalk.white(source) + chalk.gray.bold(' → ') + chalk.green(dest);
+        return { common, source, target, renamed, filename, message };
     },
     unquoteArgs(args) {
         const unquote = (builder, nextArg) => {

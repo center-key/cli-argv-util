@@ -1,4 +1,4 @@
-//! cli-argv-util v1.4.0 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.4.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 export type StringFlagMap = {
     [flag: string]: string | undefined;
@@ -10,6 +10,8 @@ export type Ancestor = {
     common: string;
     source: string;
     target: string;
+    renamed: boolean;
+    filename: string | null;
     message: string;
 };
 export type Result = {
