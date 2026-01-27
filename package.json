@@ -34,6 +34,11 @@
       "node": true,
       "mocha": true
    },
+   "cliConfig": {
+      "macros": {
+         "lucky-number": "777"
+      }
+   },
    "runScriptsConfig": {
       "clean": [
          "rimraf build dist"
@@ -67,6 +72,6 @@
       "rimraf": "~6.1",
       "run-scripts-util": "~1.3",
       "typescript": "~5.9",
-      "typescript-eslint": "~8.52"
+      "typescript-eslint": "~8.54"
    }
 }

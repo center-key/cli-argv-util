@@ -19,15 +19,82 @@ export type Ancestor = {
    message: string,          //color output in the format: "common: source -> target"
    };
 export type Result = {
-   flagMap:        StringFlagMap,   //map of flag values for each user supplied flag
+   flagMap:        StringFlagMap,   //map of unescaped flag values for each user supplied flag
+   flagMapRaw:     StringFlagMap,   //map of flag values for each user supplied flag
    flagOn:         BooleanFlagMap,  //map of the enabled status for all valid flags
    invalidFlag:    string | null,   //name of the first invalid flag
    invalidFlagMsg: string | null,   //error message for the invalid flag
-   params:         string[],        //array of parameter values supplied by the user
    paramCount:     number,          //number of parameters supplied by the user
+   params:         string[],        //array of parameter values supplied by the user
    };
+type Json = string | number | boolean | null | undefined | JsonObject | Json[];
+type JsonObject = { [key: string]: Json };
 
 const cliArgvUtil = {
+
+   assert(ok: unknown, message: string | null) {
+      if (!ok)
+         throw new Error(`[replacer-util] ${message}`);
+      },
+
+   readPackageJson() {
+      // Returns package.json as an object literal.
+      const pkgExists = fs.existsSync('package.json');
+      const pkg = pkgExists ? <JsonObject>JSON.parse(fs.readFileSync('package.json', 'utf-8')) : null;
+      const fixHiddenKeys = (pkgObj: JsonObject) => {
+         const unhide = (key: string) => {
+            const newKey = key.replace(/[@./]/g, '-');
+            if (!pkgObj[newKey])
+               pkgObj[newKey] = pkgObj[key]!;
+            };
+         Object.keys(pkgObj).forEach(unhide);
+         };
+      if (pkg?.dependencies)
+         fixHiddenKeys(<JsonObject>pkg.dependencies);
+      if (pkg?.devDependencies)
+         fixHiddenKeys(<JsonObject>pkg.devDependencies);
+      return pkg;
+      },
+
+   unescape(flags: StringFlagMap): StringFlagMap {
+      // Returns a map of CLI flags with all the flag values unescaped and macros expanded.
+      // Example:
+      //    '{{hash}}{{space}}Allow{{space}}bots{{bang}}' --> '# Allow bots!'
+      const escapers: [RegExp, string][] = [
+         [/{{apos}}/g,        "'"],
+         [/{{bang}}/g,        '!'],
+         [/{{close-curly}}/g, '}'],
+         [/{{equals}}/g,      '='],
+         [/{{gt}}/g,          '>'],
+         [/{{hash}}/g,        '#'],
+         [/{{lt}}/g,          '<'],
+         [/{{open-curly}}/g,  '{'],
+         [/{{pipe}}/g,        '|'],
+         [/{{quote}}/g,       '"'],
+         [/{{semi}}/g,        ';'],
+         [/{{space}}/g,       ' '],
+         ];
+      const macroPattern = /^{{macro:(.*)}}$/;
+      const flagEntries =  Object.entries(flags);
+      const usesMacros =   flagEntries.some(entry => entry[1]?.match(macroPattern));
+      const pkg =          usesMacros ? cliArgvUtil.readPackageJson()! : {};
+      if (!pkg.cliConfig && pkg.replacerConfig)  //DEPRECATED
+         pkg.cliConfig = pkg.replacerConfig;     //backwards compatibility workaround
+      const macros =       <JsonObject | undefined>(<JsonObject | undefined>pkg.cliConfig)?.macros;
+      const unescapeOne = (flagValue: string, escaper: typeof escapers[number]) =>
+         flagValue.replace(escaper[0], escaper[1]);
+      const expandMacro = (flagValue: string) => {
+         // If param is a macro defined in package.json, return the macro's value.
+         const macroName =  <keyof JsonObject>flagValue.match(macroPattern)?.[1];
+         const macroValue = <string>macros?.[macroName];
+         const missing =    macroName && !macroValue;
+         cliArgvUtil.assert(!missing, `Macro "${macroName}" used but not defined in package.json`);
+         return macroName ? macroValue : flagValue;
+         };
+      const doReplacements = (flagValue?: string) =>
+         !flagValue ? undefined : escapers.reduce(unescapeOne, expandMacro(flagValue));
+      return Object.fromEntries(flagEntries.map(pair => [pair[0], doReplacements(pair[1])]));
+      },
 
    parse(validFlags: string[]): Result {
       const toCamel =     (token: string) =>  token.replace(/-./g, char => char[1]!.toUpperCase());  //example: 'no-map' --> 'noMap'
@@ -42,7 +109,8 @@ const cliArgvUtil = {
       const helpMsg =     '\nValid flags are --' + validFlags.join(' --');
       const params =      args.filter(arg => !/^--/.test(arg));
       return {
-         flagMap:        flagMap,
+         flagMap:        cliArgvUtil.unescape(flagMap),
+         flagMapRaw:     flagMap,
          flagOn:         flagOn,
          invalidFlag:    invalidFlag,
          invalidFlagMsg: invalidFlag ? 'Invalid flag: --' + invalidFlag + helpMsg : null,

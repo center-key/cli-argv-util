@@ -36,12 +36,15 @@ describe('Library module', () => {
       const module = cliArgvUtil;
       const actual = Object.keys(module).sort().map(key => [key, typeof module[key]]);
       const expected = [
-         ['calcAncestor', 'function'],
-         ['cleanPath',    'function'],
-         ['parse',        'function'],
-         ['readFolder',   'function'],
-         ['run',          'function'],
-         ['unquoteArgs',  'function'],
+         ['assert',          'function'],
+         ['calcAncestor',    'function'],
+         ['cleanPath',       'function'],
+         ['parse',           'function'],
+         ['readFolder',      'function'],
+         ['readPackageJson', 'function'],
+         ['run',             'function'],
+         ['unescape',        'function'],
+         ['unquoteArgs',     'function'],
          ];
       assertDeepStrictEqual(actual, expected);
       });
@@ -59,6 +62,36 @@ describe('Calling cliArgvUtil.parse()', () => {
          flagMap: {
             flag1: undefined,
             flag3: 'three',
+            },
+         flagMapRaw: {
+            flag1: undefined,
+            flag3: 'three',
+            },
+         flagOn: {
+            flag1: true,
+            flag2: false,
+            flag3: true,
+            },
+         invalidFlag:    null,
+         invalidFlagMsg: null,
+         params:         ['file.html', 'file.png'],
+         paramCount:     2,
+         };
+      assertDeepStrictEqual(actual, expected);
+      });
+
+   it('with escaped characters and macros results in the correct replacements', () => {
+      const validFlags = ['flag1', 'flag2', 'flag3'];
+      mockCli('file.html --flag1={{hash}}{{space}}Allow{{space}}bots{{bang}} file.png --flag3={{macro:lucky-number}}');
+      const actual = cliArgvUtil.parse(validFlags);
+      const expected = {
+         flagMap: {
+            flag1: '# Allow bots!',
+            flag3: '777',
+            },
+         flagMapRaw: {
+            flag1: '{{hash}}{{space}}Allow{{space}}bots{{bang}}',
+            flag3: '{{macro:lucky-number}}',
             },
          flagOn: {
             flag1: true,
@@ -82,6 +115,10 @@ describe('Calling cliArgvUtil.parse()', () => {
             flagOne:   undefined,
             flagThree: 'three',
             },
+         flagMapRaw: {
+            flagOne:   undefined,
+            flagThree: 'three',
+            },
          flagOn: {
             flagOne:   true,
             flagTwo:   false,
@@ -101,6 +138,7 @@ describe('Calling cliArgvUtil.parse()', () => {
       const actual = cliArgvUtil.parse(validFlags);
       const expected = {
          flagMap: {},
+         flagMapRaw: {},
          flagOn: {
             flag1: false,
             flag2: false,
@@ -120,6 +158,10 @@ describe('Calling cliArgvUtil.parse()', () => {
       const actual = cliArgvUtil.parse(validFlags);
       const expected = {
          flagMap: {
+            flagOne:   undefined,
+            flagThree: 't h r e e',
+            },
+         flagMapRaw: {
             flagOne:   undefined,
             flagThree: 't h r e e',
             },
@@ -147,6 +189,10 @@ describe('Correct error message is generated', () => {
       const actual = cliArgvUtil.parse(validFlags);
       const expected = {
          flagMap: {
+            bogus: undefined,
+            flag3: 'three',
+            },
+         flagMapRaw: {
             bogus: undefined,
             flag3: 'three',
             },

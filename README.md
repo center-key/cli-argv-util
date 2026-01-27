@@ -33,7 +33,7 @@ if (cli.flagOn.noSummary)
 console.info('You supplied', cli.params.length , 'CLI parameter(s).');
 ```
 For a real world example, see:
-[cli.js](https://github.com/center-key/copy-file-util/blob/main/bin/cli.js)
+[copy-file.ts](https://github.com/center-key/copy-file-util/blob/main/src/copy-file.ts)
 
 If your CLI tool is named `my-program` and a user runs it like:
 ```shell
@@ -43,6 +43,9 @@ the resulting `cli` object will be:
 ```javascript
 {
    flagMap: {
+      cd: 'src',
+      },
+   flagMapRaw: {
       cd: 'src',
       },
    flagOn: {
@@ -57,6 +60,10 @@ the resulting `cli` object will be:
 ```
 > [!NOTE]
 > _Single quotes in commands are normalized so they work cross-platform and avoid the errors often encountered on Microsoft Windows._
+
+> [!NOTE]
+> _CLI flag values support escaped charcters and macros._<br>
+> _For documentation, see:_ https://github.com/center-key/replacer-util
 
 ## C) Results
 The `cliArgvUtil.parse()` returns an object of type `Result`:
