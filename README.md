@@ -71,7 +71,8 @@ The `cliArgvUtil.parse()` returns an object of type `Result`:
 export type StringFlagMap =  { [flag: string]: string | undefined };
 export type BooleanFlagMap = { [flag: string]: boolean };
 export type Result = {
-   flagMap:        StringFlagMap,   //map of flag values for each user supplied flag
+   flagMap:        StringFlagMap,   //map of unescaped flag values for each user supplied flag
+   flagMapRaw:     StringFlagMap,   //map of flag values for each user supplied flag
    flagOn:         BooleanFlagMap,  //map of the enabled status for all valid flags
    invalidFlag:    string | null,   //name of the first invalid flag
    invalidFlagMsg: string | null,   //error message for the invalid flag

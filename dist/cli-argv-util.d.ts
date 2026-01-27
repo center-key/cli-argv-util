@@ -1,4 +1,4 @@
-//! cli-argv-util v1.4.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.5.0 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 export type StringFlagMap = {
     [flag: string]: string | undefined;
@@ -16,13 +16,21 @@ export type Ancestor = {
 };
 export type Result = {
     flagMap: StringFlagMap;
+    flagMapRaw: StringFlagMap;
     flagOn: BooleanFlagMap;
     invalidFlag: string | null;
     invalidFlagMsg: string | null;
-    params: string[];
     paramCount: number;
+    params: string[];
+};
+type Json = string | number | boolean | null | undefined | JsonObject | Json[];
+type JsonObject = {
+    [key: string]: Json;
 };
 declare const cliArgvUtil: {
+    assert(ok: unknown, message: string | null): void;
+    readPackageJson(): JsonObject | null;
+    unescape(flags: StringFlagMap): StringFlagMap;
     parse(validFlags: string[]): Result;
     run(packageJson: {
         [key: string]: unknown;
