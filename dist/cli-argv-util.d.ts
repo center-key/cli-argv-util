@@ -1,4 +1,4 @@
-//! cli-argv-util v1.5.0 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.5.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 export type StringFlagMap = {
     [flag: string]: string | undefined;
@@ -29,8 +29,12 @@ type JsonObject = {
 };
 declare const cliArgvUtil: {
     assert(ok: unknown, message: string | null): void;
-    readPackageJson(): JsonObject | null;
-    unescape(flags: StringFlagMap): StringFlagMap;
+    readPackageJson(): JsonObject;
+    escapers: {
+        regex: RegExp;
+        char: string;
+    }[];
+    unescape(text: string, pkg: JsonObject): string;
     parse(validFlags: string[]): Result;
     run(packageJson: {
         [key: string]: unknown;
