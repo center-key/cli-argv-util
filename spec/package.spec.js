@@ -36,6 +36,7 @@ describe('Library module', () => {
          ['assert',          'function'],
          ['calcAncestor',    'function'],
          ['cleanPath',       'function'],
+         ['escapers',        'object'],
          ['parse',           'function'],
          ['readFolder',      'function'],
          ['readPackageJson', 'function'],

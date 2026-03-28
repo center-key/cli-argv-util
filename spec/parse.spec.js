@@ -114,6 +114,32 @@ describe('Calling cliArgvUtil.parse()', () => {
 ////////////////////////////////////////////////////////////////////////////////
 describe('Calling cliArgvUtil.parse() with escaped characters and macros', () => {
 
+   it('results in the correct CLI parameter replacements', () => {
+      const validFlags = ['flag1', 'flag2', 'flag3'];
+      mockCli('{{macro:html-filename}} --flag1 {{macro:png-filename}} --flag3=three');
+      const actual = cliArgvUtil.parse(validFlags);
+      const expected = {
+         flagMap: {
+            flag1: undefined,
+            flag3: 'three',
+            },
+         flagMapRaw: {
+            flag1: undefined,
+            flag3: 'three',
+            },
+         flagOn: {
+            flag1: true,
+            flag2: false,
+            flag3: true,
+            },
+         invalidFlag:    null,
+         invalidFlagMsg: null,
+         params:         ['file.html', 'file.png'],
+         paramCount:     2,
+         };
+      assertDeepStrictEqual(actual, expected);
+      });
+
    it('results in the correct CLI flag value replacements', () => {
       const validFlags = ['flag1', 'flag2', 'flag3'];
       mockCli('file.html --flag1={{hash}}{{space}}Allow{{space}}bots{{bang}} file.png --flag3={{macro:lucky-number}}');
