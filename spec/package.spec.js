@@ -4,7 +4,7 @@
 // Imports
 import { assertDeepStrictEqual } from 'assert-deep-strict-equal';
 import { cliArgvUtil } from '../dist/cli-argv-util.js';
-import fs from 'fs';
+import fs from 'node:fs';
 
 ////////////////////////////////////////////////////////////////////////////////
 describe('The "dist" folder', () => {
