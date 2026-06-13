@@ -33,7 +33,7 @@ describe('Library module', () => {
       const module = cliArgvUtil;
       const actual = Object.keys(module).sort().map(key => [key, typeof module[key]]);
       const expected = [
-         ['assert',          'function'],
+         ['assertOk',        'function'],
          ['calcAncestor',    'function'],
          ['cleanPath',       'function'],
          ['escapers',        'object'],

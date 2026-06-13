@@ -32,7 +32,7 @@ type JsonObject = { [key: string]: Json };
 
 const cliArgvUtil = {
 
-   assert(ok: unknown, message: string | null) {
+   assertOk(ok: unknown, message: string | null) {
       if (!ok)
          throw new Error(`[replacer-util] ${message}`);
       },
@@ -85,7 +85,7 @@ const cliArgvUtil = {
       const macroValue =   <string>macros[macroName];
       const expandedText = macroName ? macroValue : text;
       const missing =      macroName && !macroValue;
-      cliArgvUtil.assert(!missing, `Macro "${macroName}" used but not defined in package.json`);
+      cliArgvUtil.assertOk(!missing, `Macro "${macroName}" used but not defined in package.json`);
       const replace = (flagValue: string, escaper: typeof cliArgvUtil.escapers[number]) =>
          flagValue.replace(escaper.regex, escaper.char);
       return cliArgvUtil.escapers.reduce(replace, expandedText);
@@ -120,7 +120,7 @@ const cliArgvUtil = {
       },
 
    run(packageJson: { [key: string]: unknown }, posix: string) {
-      // Example usage:
+      // Example:
       //    const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
       //    it('executing from the CLI copies the correct files', () => {
       //       cliArgvUtil.run(pkg, 'copy-folder source build');
@@ -131,18 +131,20 @@ const cliArgvUtil = {
 
 
    readFolder(folder: string): string[] {
+      // Returns a list of the items in the given folder.
       return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
       },
 
    cleanPath(name: string): string {
-      // Simple utility to return the normalized Unix version of a path.
-      // Example: "abc\xyz\ " --> "abc/xyz"
+      // Returns the normalized Unix version of a path.
+      // Example:
+      //    cliArgvUtil.cleanPath('abc\xyz\ ') === 'abc/xyz'
       return slash(path.normalize(name)).trim().replace(/\/$/, '');
       },
 
    calcAncestor(sourceFile: string, targetFile: string): Ancestor {
       // Example:
-      //    calcAncestor('aaa/bbb/logo.png', 'aaa/bbb/ccc/logo.png')
+      //    cliArgvUtil.calcAncestor('aaa/bbb/logo.png', 'aaa/bbb/ccc/logo.png')
       // Returns:
       //    { common: 'aaa/bbb', source: 'logo.png', target: 'ccc/logo.png', renamed: true,
       //       filename: 'logo.png', message: 'aaa/bbb: logo.png -> ccc/' };
@@ -162,7 +164,7 @@ const cliArgvUtil = {
       },
 
    unquoteArgs(args: string[]): string[] {
-      // A workaround to a Microsoft Windows flaw
+      // A workaround to a Microsoft Windows flaw.
       type ArgsBuilder = [quoteMode: boolean, args: string[]];
       const unquote = (builder: ArgsBuilder, nextArg: string): ArgsBuilder => {
          const arg =  nextArg.replace(/^'/, '').replace(/'$/, '');
