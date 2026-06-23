@@ -3,8 +3,10 @@
 
 // Imports
 import { assertDeepStrictEqual } from 'assert-deep-strict-equal';
-import { cliArgvUtil } from '../dist/cli-argv-util.js';
 import fs from 'node:fs';
+
+// Setup
+import { cliArgvUtil } from '../dist/cli-argv-util.js';
 
 ////////////////////////////////////////////////////////////////////////////////
 describe('The "dist" folder', () => {
@@ -15,6 +17,19 @@ describe('The "dist" folder', () => {
          'cli-argv-util.d.ts',
          'cli-argv-util.js',
          ];
+      assertDeepStrictEqual(actual, expected);
+      });
+
+   });
+
+////////////////////////////////////////////////////////////////////////////////
+describe('Library version number', () => {
+
+   it('follows semantic version formatting', () => {
+      const version =  cliArgvUtil.version;
+      const semVer =   /\d+[.]\d+[.]\d+/;
+      const actual =   { version: version, valid: semVer.test(version) };
+      const expected = { version: version, valid: true };
       assertDeepStrictEqual(actual, expected);
       });
 
@@ -43,6 +58,7 @@ describe('Library module', () => {
          ['run',             'function'],
          ['unescape',        'function'],
          ['unquoteArgs',     'function'],
+         ['version',         'string'],
          ];
       assertDeepStrictEqual(actual, expected);
       });

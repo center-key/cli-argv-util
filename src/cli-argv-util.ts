@@ -39,6 +39,8 @@ type JsonObject = { [key: string]: Json };
 
 const cliArgvUtil = {
 
+   version: '{{package.version}}',
+
    assertOk(ok: unknown, message: string | null) {
       if (!ok)
          throw new Error(`[replacer-util] ${message}`);
