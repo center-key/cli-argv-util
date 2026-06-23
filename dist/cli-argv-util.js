@@ -1,12 +1,13 @@
-//! cli-argv-util v1.5.1 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.5.2 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import chalk from 'chalk';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import slash from 'slash';
 const cliArgvUtil = {
-    assert(ok, message) {
+    version: '1.5.2',
+    assertOk(ok, message) {
         if (!ok)
             throw new Error(`[replacer-util] ${message}`);
     },
@@ -51,7 +52,7 @@ const cliArgvUtil = {
         const macroValue = macros[macroName];
         const expandedText = macroName ? macroValue : text;
         const missing = macroName && !macroValue;
-        cliArgvUtil.assert(!missing, `Macro "${macroName}" used but not defined in package.json`);
+        cliArgvUtil.assertOk(!missing, `Macro "${macroName}" used but not defined in package.json`);
         const replace = (flagValue, escaper) => flagValue.replace(escaper.regex, escaper.char);
         return cliArgvUtil.escapers.reduce(replace, expandedText);
     },
@@ -100,13 +101,19 @@ const cliArgvUtil = {
         const len = common.length ? common.length + 1 : 0;
         const source = sourceFile.substring(len);
         const target = targetFile.substring(len);
-        const intro = common ? chalk.blue(common) + chalk.gray.bold(': ') : '';
         const renamed = path.basename(sourceFile) !== path.basename(targetFile);
         const filename = renamed ? null : path.basename(sourceFile);
         const folder = path.dirname(target);
         const dest = renamed ? target : (folder === '.' ? filename : folder + '/');
-        const message = intro + chalk.white(source) + chalk.gray.bold(' → ') + chalk.green(dest);
-        return { common, source, target, renamed, filename, message };
+        const color = {
+            common: common ? chalk.blue(common) + chalk.gray.bold(': ') : '',
+            source: chalk.white(source),
+            arrow: chalk.gray.bold('→'),
+            target: chalk.green(dest),
+        };
+        const output = `${color.source} ${color.arrow} ${color.target}`;
+        const message = color.common + output;
+        return { common, source, target, renamed, filename, output, message, color };
     },
     unquoteArgs(args) {
         const unquote = (builder, nextArg) => {
