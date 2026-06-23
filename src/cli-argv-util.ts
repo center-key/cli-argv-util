@@ -11,12 +11,19 @@ import slash from 'slash';
 export type StringFlagMap =  { [flag: string]: string | undefined };
 export type BooleanFlagMap = { [flag: string]: boolean };
 export type Ancestor = {
-   common:  string,          //path of the lowest common ancestor folder
-   source:  string,          //path of the source file relative to the ancestor folder
-   target:  string,          //path of the target file relative to the ancestor folder
-   renamed: boolean,         //true if the base filenames are different
-   filename: string | null,  //base filename of the two files if they are identical
-   message: string,          //color output in the format: "common: source -> target"
+   common:    string,          //path of the lowest common ancestor folder
+   source:    string,          //path of the source file relative to the ancestor folder
+   target:    string,          //path of the target file relative to the ancestor folder
+   renamed:   boolean,         //true if the base filenames are different
+   filename:  string | null,   //base filename of the two files if they are identical
+   output:    string,          //color output message in the format: "source -> target"
+   message:   string,          //color output message in the format: "common: source -> target"
+   color: {                    //encoded parts of the output message
+      common: string,
+      source: string,
+      arrow:  string,
+      target: string,
+      },
    };
 export type Result = {
    flagMap:        StringFlagMap,   //map of unescaped flag values for each user supplied flag
@@ -154,13 +161,19 @@ const cliArgvUtil = {
       const len =      common.length ? common.length + 1 : 0;
       const source =   sourceFile.substring(len);
       const target =   targetFile.substring(len);
-      const intro =    common ? chalk.blue(common) + chalk.gray.bold(': ') : '';
       const renamed =  path.basename(sourceFile) !== path.basename(targetFile);
       const filename = renamed ? null : path.basename(sourceFile);
       const folder =   path.dirname(target);
       const dest =     renamed ? target : (folder === '.' ? filename : folder + '/');
-      const message =  intro + chalk.white(source) + chalk.gray.bold(' → ') + chalk.green(dest);
-      return { common, source, target, renamed, filename, message };
+      const color = {
+         common: common ? chalk.blue(common) + chalk.gray.bold(': ') : '',
+         source: chalk.white(source),
+         arrow:  chalk.gray.bold('→'),
+         target: chalk.green(dest),
+         };
+      const output = `${color.source} ${color.arrow} ${color.target}`;
+      const message = color.common + output;
+      return { common, source, target, renamed, filename, output, message, color };
       },
 
    unquoteArgs(args: string[]): string[] {
