@@ -1,4 +1,4 @@
-//! cli-argv-util v1.5.2 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.5.3 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import chalk from 'chalk';
@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import slash from 'slash';
 const cliArgvUtil = {
-    version: '1.5.2',
+    version: '1.5.3',
     assertOk(ok, message) {
         if (!ok)
             throw new Error(`[replacer-util] ${message}`);
@@ -93,6 +93,9 @@ const cliArgvUtil = {
     },
     cleanPath(name) {
         return slash(path.normalize(name)).trim().replace(/\/$/, '');
+    },
+    colorizePath(pathname) {
+        return chalk.green(path.dirname(pathname) + '/') + chalk.white(path.basename(pathname));
     },
     calcAncestor(sourceFile, targetFile) {
         const index = Array.from(sourceFile).findIndex((char, i) => targetFile[i] !== char);

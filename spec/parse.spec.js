@@ -3,9 +3,9 @@
 
 // Imports
 import { assertDeepStrictEqual } from 'assert-deep-strict-equal';
-import { cliArgvUtil } from '../dist/cli-argv-util.js';
 
-// Utilities
+// Setup and Utilities
+import { cliArgvUtil } from '../dist/cli-argv-util.js';
 const mockCli = (line) => process.argv = ['node', 'mock.js', ...line.split(' ')];
 
 ////////////////////////////////////////////////////////////////////////////////
