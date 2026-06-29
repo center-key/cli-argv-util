@@ -5,7 +5,7 @@
 import { assertDeepStrictEqual } from 'assert-deep-strict-equal';
 import fs from 'node:fs';
 
-// Setup
+// Setup and Utilities
 import { cliArgvUtil } from '../dist/cli-argv-util.js';
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +51,7 @@ describe('Library module', () => {
          ['assertOk',        'function'],
          ['calcAncestor',    'function'],
          ['cleanPath',       'function'],
+         ['colorizePath',    'function'],
          ['escapers',        'object'],
          ['parse',           'function'],
          ['readFolder',      'function'],

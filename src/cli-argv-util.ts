@@ -151,6 +151,10 @@ const cliArgvUtil = {
       return slash(path.normalize(name)).trim().replace(/\/$/, '');
       },
 
+   colorizePath(pathname: string): string {
+      return chalk.green(path.dirname(pathname) + '/') + chalk.white(path.basename(pathname));
+      },
+
    calcAncestor(sourceFile: string, targetFile: string): Ancestor {
       // Example:
       //    cliArgvUtil.calcAncestor('aaa/bbb/logo.png', 'aaa/bbb/ccc/logo.png')
