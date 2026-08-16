@@ -138,7 +138,6 @@ const cliArgvUtil = {
       return execSync(command.replace(name, 'node bin/cli.js'), { stdio: 'inherit' });
       },
 
-
    readFolder(folder: string): string[] {
       // Returns a list of the items in the given folder.
       return fs.readdirSync(folder, { recursive: true }).map(file => slash(String(file))).sort();
