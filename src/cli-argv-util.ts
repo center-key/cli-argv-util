@@ -102,12 +102,14 @@ const cliArgvUtil = {
 
    parse(validFlags: string[]): Result {
       const pkg =         cliArgvUtil.readPackageJson();
-      const toCamel =     (token: string) =>  token.replace(/-./g, char => char[1]!.toUpperCase());  //example: 'no-map' --> 'noMap'
-      const toEntry =     (pair: string[]) => [toCamel(pair[0]!), pair[1]];        //example: ['no-map'] --> ['noMap', undefined]
-      const toPair =      (flag: string) =>   flag.replace(/^--/, '').split('=');  //example: '--cd=build' --> ['cd', 'build']
-      const unescape =    (value?: string) => !value ? undefined : cliArgvUtil.unescape(value, pkg);
+      const toCamel =     (token: string) =>   token.replace(/-./g, char => char[1]!.toUpperCase());  //example: 'no-map' --> 'noMap'
+      const toEntry =     (pair: string[]) =>  [toCamel(pair[0]!), pair[1]];        //example: ['no-map'] --> ['noMap', undefined]
+      const toParts =     (flag: string) =>    flag.replace(/^--/, '').split('=');  //example: '--cd=build' --> ['cd', 'build']
+      const squish =      (parts: string[]) => <string[]>[parts[0], parts.slice(1).join('=')];  //handles '=' char in flag value
+      const toPair =      (parts: string[]) => parts.length < 3 ? parts : squish(parts);
+      const unescape =    (value?: string) =>  !value ? undefined : cliArgvUtil.unescape(value, pkg);
       const args =        cliArgvUtil.unquoteArgs(process.argv.slice(2));
-      const pairs =       args.filter(arg => /^--/.test(arg)).map(toPair);
+      const pairs =       args.filter(arg => /^--/.test(arg)).map(toParts).map(toPair);
       const flagMapRaw =  <StringFlagMap>Object.fromEntries(pairs.map(toEntry));
       const flagEntries = Object.entries(flagMapRaw);
       const flagMap =     Object.fromEntries(flagEntries.map(pair => [pair[0], unescape(pair[1])]));

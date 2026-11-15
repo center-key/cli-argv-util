@@ -109,6 +109,34 @@ describe('Calling cliArgvUtil.parse()', () => {
       assertDeepStrictEqual(actual, expected);
       });
 
+   it('correctly handles the "=" character in a flag value', () => {
+      const validFlags = ['flag1', 'flag2', 'flag3'];
+      mockCli("file=good.html --flag1=カ=ジックス --flag2==A=B=C= --flag3==");
+      const actual = cliArgvUtil.parse(validFlags);
+      const expected = {
+         flagMap: {
+            flag1: 'カ=ジックス',
+            flag2: '=A=B=C=',
+            flag3: '=',
+            },
+         flagMapRaw: {
+            flag1: 'カ=ジックス',
+            flag2: '=A=B=C=',
+            flag3: '=',
+            },
+         flagOn: {
+            flag1: true,
+            flag2: true,
+            flag3: true,
+            },
+         invalidFlag:    null,
+         invalidFlagMsg: null,
+         params:         ['file=good.html'],
+         paramCount:     1,
+         };
+      assertDeepStrictEqual(actual, expected);
+      });
+
    });
 
 ////////////////////////////////////////////////////////////////////////////////
