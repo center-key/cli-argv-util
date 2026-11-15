@@ -1,4 +1,4 @@
-//! cli-argv-util v1.5.3 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.5.4 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 export type StringFlagMap = {
     [flag: string]: string | undefined;

@@ -1,4 +1,4 @@
-//! cli-argv-util v1.5.3 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
+//! cli-argv-util v1.5.4 ~~ https://github.com/center-key/cli-argv-util ~~ MIT License
 
 import { execSync } from 'node:child_process';
 import chalk from 'chalk';
@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import slash from 'slash';
 const cliArgvUtil = {
-    version: '1.5.3',
+    version: '1.5.4',
     assertOk(ok, message) {
         if (!ok)
             throw new Error(`[replacer-util] ${message}`);
@@ -60,10 +60,12 @@ const cliArgvUtil = {
         const pkg = cliArgvUtil.readPackageJson();
         const toCamel = (token) => token.replace(/-./g, char => char[1].toUpperCase());
         const toEntry = (pair) => [toCamel(pair[0]), pair[1]];
-        const toPair = (flag) => flag.replace(/^--/, '').split('=');
+        const toParts = (flag) => flag.replace(/^--/, '').split('=');
+        const squish = (parts) => [parts[0], parts.slice(1).join('=')];
+        const toPair = (parts) => parts.length < 3 ? parts : squish(parts);
         const unescape = (value) => !value ? undefined : cliArgvUtil.unescape(value, pkg);
         const args = cliArgvUtil.unquoteArgs(process.argv.slice(2));
-        const pairs = args.filter(arg => /^--/.test(arg)).map(toPair);
+        const pairs = args.filter(arg => /^--/.test(arg)).map(toParts).map(toPair);
         const flagMapRaw = Object.fromEntries(pairs.map(toEntry));
         const flagEntries = Object.entries(flagMapRaw);
         const flagMap = Object.fromEntries(flagEntries.map(pair => [pair[0], unescape(pair[1])]));
