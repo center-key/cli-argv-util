@@ -111,18 +111,18 @@ describe('Calling cliArgvUtil.parse()', () => {
 
    it('correctly handles the "=" character in a flag value', () => {
       const validFlags = ['flag1', 'flag2', 'flag3'];
-      mockCli("file=good.html --flag1=カ=ジックス --flag2==A=B=C= --flag3==");
+      mockCli("file=good.html --flag1=カ=ジックス --flag2==A=B=C= --flag3=https://example.com/?x=3&y=7");
       const actual = cliArgvUtil.parse(validFlags);
       const expected = {
          flagMap: {
             flag1: 'カ=ジックス',
             flag2: '=A=B=C=',
-            flag3: '=',
+            flag3: 'https://example.com/?x=3&y=7',
             },
          flagMapRaw: {
             flag1: 'カ=ジックス',
             flag2: '=A=B=C=',
-            flag3: '=',
+            flag3: 'https://example.com/?x=3&y=7',
             },
          flagOn: {
             flag1: true,
